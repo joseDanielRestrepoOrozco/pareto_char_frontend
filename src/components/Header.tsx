@@ -19,7 +19,7 @@ const Header = ({ project }: { project: Project | null }) => {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink>
+            <BreadcrumbLink asChild>
               <Link to="/">Inicio</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>

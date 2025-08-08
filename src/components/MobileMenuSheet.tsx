@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import { BarChart3, LogIn, Menu, UserPlus } from 'lucide-react';
+import { BarChart3, Menu } from 'lucide-react';
 
 import {
   Sheet,
@@ -11,9 +10,12 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from './ui/button';
 import { useState } from 'react';
+import { useAppSelector } from '@/hooks/store';
+import MobileAuthContent from './MobileContent';
 
 const MobileMenuSheet = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated } = useAppSelector(state => state.auth);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -30,31 +32,16 @@ const MobileMenuSheet = () => {
         <SheetHeader>
           <SheetTitle className="flex items-center space-x-2">
             <BarChart3 className="h-6 w-6 text-blue-base" />
-            <span className="text-blue-base font-bold">ParetoAnalytics</span>
+            <span className="text-blue-base font-bold">Diagrama de Pareto</span>
           </SheetTitle>
           <SheetDescription className="text-blue-dark">
-            Accede a tu cuenta o regístrate para comenzar
+            {isAuthenticated
+              ? 'Gestiona tus proyectos y análisis'
+              : 'Accede a tu cuenta o regístrate para comenzar'}
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex flex-col space-y-4 mt-8 pt-8 border-t border-gold-base mx-4">
-          <Link
-            to="/login"
-            className="w-full bg-white text-blue-base font-bold py-3 px-4 rounded-lg border-2 border-blue-base hover:bg-blue-base hover:text-white transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-base focus:ring-offset-2 flex items-center justify-center space-x-2 no-underline"
-            onClick={() => setIsOpen(false)}
-          >
-            <LogIn className="h-4 w-4" />
-            <span>Iniciar Sesión</span>
-          </Link>
-          <Link
-            to="/register"
-            className="w-full bg-gold-base hover:bg-gold-dark text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gold-base focus:ring-offset-2 flex items-center justify-center space-x-2 no-underline"
-            onClick={() => setIsOpen(false)}
-          >
-            <UserPlus className="h-4 w-4" />
-            <span>Registrarse</span>
-          </Link>
-        </div>
+        <MobileAuthContent onClose={() => setIsOpen(false)} />
       </SheetContent>
     </Sheet>
   );

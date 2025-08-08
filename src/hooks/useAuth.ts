@@ -49,7 +49,6 @@ export const useAuth = () => {
     toast.promise(loginRequest(userData), {
       loading: 'Iniciando sesión...',
       success: user => {
-        // ✅ Solo guardamos datos temporales necesarios para verificación
         dispatch(setPendingUser(user));
         navigate('/authenticationCode/verify-login');
         return 'Inicio de sesión exitoso';
@@ -105,9 +104,8 @@ export const useAuth = () => {
       dispatch(setUser(fetchedUser));
     } catch (error) {
       window.localStorage.removeItem('token');
-      dispatch(clearUser());
       navigate('/');
-      if (error instanceof AxiosError && error.response) {
+      if (error instanceof AxiosError) {
         toast.error('Error al verificar el usuario');
       } else {
         toast.error('Error inesperado');

@@ -1,6 +1,5 @@
-import { BookOpen, Eye, Lightbulb, ArrowRight } from 'lucide-react';
+import { Eye, ArrowRight } from 'lucide-react';
 import ProcessStep from '@/components/ProcessStep';
-import FeatureCard from '@/components/FeatureCard';
 
 const ParetoUsageSection = () => {
   return (
@@ -11,8 +10,8 @@ const ParetoUsageSection = () => {
             Cómo Funciona Nuestra Herramienta de Pareto
           </h3>
           <p className="text-xl text-blue-dark max-w-3xl mx-auto">
-            Simplificamos el análisis de Pareto para ti. Solo ingresa tus datos
-            y nosotros nos encargamos de todo el proceso automáticamente.
+            Simplificamos Diagrama de Pareto para ti. Solo ingresa tus datos y
+            nosotros nos encargamos de todo el proceso automáticamente.
           </p>
         </div>
 
@@ -55,8 +54,8 @@ const ParetoUsageSection = () => {
                 </h5>
               </div>
               <p className="text-gold-light mb-4">
-                La aplicación marca automáticamente el punto donde el 20% de las
-                causas generan el 80% del impacto total.
+                La aplicación marca automáticamente el punto donde se generan el
+                80% de los problemas
               </p>
               <div className="bg-gold-light p-3 rounded-lg">
                 <p className="text-blue-base font-medium">
@@ -64,20 +63,6 @@ const ParetoUsageSection = () => {
                   enfocar tus esfuerzos
                 </p>
               </div>
-            </div>
-
-            <div className="grid gap-4">
-              <FeatureCard
-                icon={BookOpen}
-                title="Gráfico Profesional"
-                description="Diagrama completo con barras de frecuencia y curva acumulativa, listo para presentaciones."
-              />
-
-              <FeatureCard
-                icon={Lightbulb}
-                title="Recomendaciones Inteligentes"
-                description="Sugerencias automáticas sobre qué problemas priorizar basadas en el análisis de Pareto."
-              />
             </div>
 
             <div className="bg-gold-light p-6 rounded-xl border border-gold-base">

@@ -48,7 +48,7 @@ export function AppSidebar() {
           </div>
           <div>
             <h2 className="text-lg font-bold text-blue-dark">
-              Pareto Analytics
+              Diagrama de Pareto
             </h2>
             <p className="text-sm text-gold-base">Análisis de Problemas</p>
           </div>
