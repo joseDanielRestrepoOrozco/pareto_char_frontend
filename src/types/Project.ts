@@ -1,4 +1,4 @@
-import type { Problem } from './Problem';
+import type { Problem } from '@/types/Problem';
 
 export interface Project {
   id: string;

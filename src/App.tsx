@@ -5,9 +5,9 @@ import Register from '@/pages/Register';
 import Dashboard from '@/pages/Dashboard';
 import SecondFactorAuthentication from '@/pages/SecondFactorAuthentication';
 import { useEffect } from 'react';
-import { useAuth } from './hooks/useAuth';
-import ProtectedRoute from './components/ProtectedRoute';
-import { Toaster } from './components/ui/sonner';
+import { useAuth } from '@/hooks/useAuth';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { Toaster } from '@/components/ui/sonner';
 
 const App = () => {
   const { verifyToken } = useAuth();

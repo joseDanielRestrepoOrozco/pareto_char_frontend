@@ -24,7 +24,7 @@ const HeroSection: React.FC = () => {
               to={isAuthenticated ? '/dashboard' : '/register'}
               className="bg-gold-base hover:bg-gold-dark text-blue-dark px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 flex items-center"
             >
-              {isAuthenticated ? 'Ir al Dashboard' : 'Comenzar Ahora'}
+              {isAuthenticated ? 'Nuevo Proyecto' : 'Comenzar Ahora'}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </div>

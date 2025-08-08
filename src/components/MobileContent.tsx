@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { LogIn, UserPlus, LayoutDashboard, LogOut } from 'lucide-react';
+import { LogIn, UserPlus, Plus, LogOut } from 'lucide-react';
 import { useAppSelector } from '@/hooks/store';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -25,10 +25,10 @@ const MobileContent = ({ onClose }: MobileContentProps) => {
           className="w-full bg-white text-blue-base font-bold py-3 px-4 rounded-lg border-2 border-blue-base hover:bg-blue-base hover:text-white transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-base focus:ring-offset-2 flex items-center justify-center space-x-2 no-underline"
           onClick={onClose}
         >
-          <LayoutDashboard className="h-4 w-4" />
-          <span>Dashboard</span>
+          <Plus className="h-4 w-4" />
+          <span>Nuevo Proyecto</span>
         </Link>
-        
+
         <button
           onClick={handleLogout}
           className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center justify-center space-x-2"

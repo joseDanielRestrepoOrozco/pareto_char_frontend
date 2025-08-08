@@ -8,10 +8,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useAppSelector } from '@/hooks/store';
-import MobileAuthContent from './MobileContent';
+import MobileAuthContent from '@/components/MobileContent';
 
 const MobileMenuSheet = () => {
   const [isOpen, setIsOpen] = useState(false);
