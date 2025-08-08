@@ -9,22 +9,56 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordRequest } from '@/services/auth';
 import { toast } from 'sonner';
 import { ArrowLeft, Eye, EyeOff, KeyRound, AlertTriangle } from 'lucide-react';
 import { AxiosError } from 'axios';
 
-const ChangeResetPassword = () => {
-  const [formData, setFormData] = useState({
-    newPassword: '',
-    confirmNewPassword: '',
+const changePasswordSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .min(8, 'La contraseña debe tener al menos 8 caracteres')
+      .max(20, 'La contraseña debe tener como máximo 20 caracteres')
+      .refine(val => /[0-9]/.test(val), {
+        error: 'La contraseña debe incluir un número',
+      })
+      .refine(val => /[^A-Za-z0-9]/.test(val), {
+        error: 'La contraseña debe incluir un carácter especial',
+      }),
+    confirmNewPassword: z.string(),
+  })
+  .refine(data => data.newPassword === data.confirmNewPassword, {
+    message: 'Las contraseñas no coinciden',
+    path: ['confirmNewPassword'],
   });
-  const [isLoading, setIsLoading] = useState(false);
+
+const ChangeResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [tokenValid, setTokenValid] = useState(true);
   const navigate = useNavigate();
   const { token } = useParams<{ token: string }>();
+
+  const form = useForm({
+    resolver: zodResolver(changePasswordSchema),
+    defaultValues: {
+      newPassword: '',
+      confirmNewPassword: '',
+    },
+    mode: 'onTouched',
+  });
 
   useEffect(() => {
     if (!token) {
@@ -35,44 +69,18 @@ const ChangeResetPassword = () => {
     }
   }, [token]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!formData.newPassword || !formData.confirmNewPassword) {
-      toast.error('Por favor completa todos los campos');
-      return;
-    }
-
-    if (formData.newPassword !== formData.confirmNewPassword) {
-      toast.error('Las contraseñas no coinciden');
-      return;
-    }
-
-    if (formData.newPassword.length < 6) {
-      toast.error('La contraseña debe tener al menos 6 caracteres');
-      return;
-    }
-
+  const onSubmit = form.handleSubmit(async values => {
     if (!token) {
       toast.error('Token no válido');
       return;
     }
 
-    setIsLoading(true);
-
     try {
       console.log('Enviando solicitud con token:', token); // Para debug
       await resetPasswordRequest({
         token,
-        newPassword: formData.newPassword,
-        confirmNewPassword: formData.confirmNewPassword,
+        newPassword: values.newPassword,
+        confirmNewPassword: values.confirmNewPassword,
       });
 
       toast.success('Contraseña restablecida exitosamente');
@@ -85,10 +93,8 @@ const ChangeResetPassword = () => {
       } else {
         toast.error('Error desconocido');
       }
-    } finally {
-      setIsLoading(false);
     }
-  };
+  });
 
   if (!tokenValid) {
     return (
@@ -145,94 +151,106 @@ const ChangeResetPassword = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <div className="relative">
-                <Input
-                  id="newPassword"
-                  name="newPassword"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Nueva contraseña"
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                  required
-                  disabled={isLoading}
-                  minLength={6}
-                  className="pl-4 pr-10 transition-all focus-visible:ring-2 duration-200 focus-visible:ring-blue-dark focus-visible:border-none"
-                />
+          <Form {...form}>
+            <form onSubmit={onSubmit} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nueva contraseña</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          className="pl-4 pr-10 transition-all focus-visible:ring-2 duration-200 focus-visible:ring-blue-dark focus-visible:border-none"
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="Nueva contraseña"
+                          {...field}
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="confirmNewPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirmar nueva contraseña</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          className="pl-4 pr-10 transition-all focus-visible:ring-2 duration-200 focus-visible:ring-blue-dark focus-visible:border-none"
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          placeholder="Confirmar nueva contraseña"
+                          {...field}
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
+                        >
+                          {showConfirmPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="space-y-4">
                 <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                  onClick={() => setShowPassword(!showPassword)}
-                  disabled={isLoading}
+                  type="submit"
+                  className="w-full cursor-pointer bg-gold-base hover:bg-gold-dark text-white font-bold py-6 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gold-base focus:ring-offset-2 mt-4"
+                  disabled={form.formState.isSubmitting}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {form.formState.isSubmitting
+                    ? 'Restableciendo...'
+                    : 'Restablecer Contraseña'}
                 </Button>
+
+                <div className="space-y-2">
+                  <Link to="/forgot-password">
+                    <Button className="w-full bg-white text-blue-base font-bold py-3 px-4 rounded-lg border-2 border-blue-base hover:bg-blue-base hover:text-white transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-base focus:ring-offset-2">
+                      Solicitar nuevo enlace
+                    </Button>
+                  </Link>
+
+                  <Link to="/login">
+                    <Button className="w-full bg-white text-blue-base font-bold py-3 px-4 rounded-lg border-2 border-blue-base hover:bg-blue-base hover:text-white transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-base focus:ring-offset-2">
+                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      Volver al login
+                    </Button>
+                  </Link>
+                </div>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="relative">
-                <Input
-                  id="confirmNewPassword"
-                  name="confirmNewPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Confirmar nueva contraseña"
-                  value={formData.confirmNewPassword}
-                  onChange={handleChange}
-                  required
-                  disabled={isLoading}
-                  minLength={6}
-                  className="pl-4 pr-10 transition-all focus-visible:ring-2 duration-200 focus-visible:ring-blue-dark focus-visible:border-none"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  disabled={isLoading}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <Button
-                type="submit"
-                className="w-full cursor-pointer bg-gold-base hover:bg-gold-dark text-white font-bold py-6 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gold-base focus:ring-offset-2 mt-4"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Restableciendo...' : 'Restablecer Contraseña'}
-              </Button>
-
-              <div className="space-y-2">
-                <Link to="/forgot-password">
-                  <Button className="w-full bg-white text-blue-base font-bold py-3 px-4 rounded-lg border-2 border-blue-base hover:bg-blue-base hover:text-white transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-base focus:ring-offset-2">
-                    Solicitar nuevo enlace
-                  </Button>
-                </Link>
-
-                <Link to="/login">
-                  <Button className="w-full bg-white text-blue-base font-bold py-3 px-4 rounded-lg border-2 border-blue-base hover:bg-blue-base hover:text-white transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-base focus:ring-offset-2">
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Volver al login
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </form>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </main>
