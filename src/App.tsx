@@ -4,6 +4,8 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Dashboard from '@/pages/Dashboard';
 import SecondFactorAuthentication from '@/pages/SecondFactorAuthentication';
+import ForgotPassword from '@/pages/ForgotPassword';
+import ChangeResetPassword from '@/pages/ChangeResetPassword';
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -24,6 +26,11 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/changeResetPassword/:token"
+          element={<ChangeResetPassword />}
+        />
         <Route
           path="/AuthenticationCode/:purpose"
           element={<SecondFactorAuthentication />}

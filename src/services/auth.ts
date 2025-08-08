@@ -1,5 +1,13 @@
 import axios from '@/services/axios';
-import type { RegisterData, LoginData, VerifyCodeResponse } from '@/types/Auth';
+import type {
+  RegisterData,
+  LoginData,
+  VerifyCodeResponse,
+  ForgotPasswordData,
+  ResetPasswordData,
+  ForgotPasswordResponse,
+  ResetPasswordResponse,
+} from '@/types/Auth';
 import type { User } from '@/types/User';
 
 export const registerRequest = async (data: RegisterData) => {
@@ -41,5 +49,21 @@ export const verifySignupRequest = async (email: string, code: string) => {
     email,
     code,
   });
+  return response.data;
+};
+
+export const forgotPasswordRequest = async (data: ForgotPasswordData) => {
+  const response = await axios.post<ForgotPasswordResponse>(
+    '/auth/resetPassword',
+    data
+  );
+  return response.data;
+};
+
+export const resetPasswordRequest = async (data: ResetPasswordData) => {
+  const response = await axios.put<ResetPasswordResponse>(
+    '/auth/changeResetPassword',
+    data
+  );
   return response.data;
 };
