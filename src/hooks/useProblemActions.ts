@@ -5,7 +5,7 @@ import {
   setProblems,
   updateProblem,
 } from '@/store/problems/slice';
-import { useAppDispatch } from '@/hooks/store';
+import { useAppDispatch, useAppSelector } from '@/hooks/store';
 import type { Problem, NewProblem } from '@/types/Problem';
 import {
   createProblemRequest,
@@ -16,8 +16,15 @@ import { toast } from 'sonner';
 
 export const useProblemActions = () => {
   const dispatch = useAppDispatch();
+  const problems = useAppSelector(state => state.problems);
 
   const addProblem = async (projectId: string, problem: NewProblem) => {
+    // Verificar límite de problemas antes de hacer la petición al backend
+    if (problems.length >= 10) {
+      toast.error('No puedes agregar más de 10 problemas por proyecto');
+      return;
+    }
+
     try {
       const createdProblem = await createProblemRequest(projectId, problem);
       dispatch(appendProblem(createdProblem));
@@ -30,7 +37,6 @@ export const useProblemActions = () => {
   };
 
   const deleteProblem = (projectId: string, problemId: string) => {
-
     toast.promise(deleteProblemRequest(projectId, problemId), {
       loading: 'Eliminando problema...',
       success: () => {

@@ -17,7 +17,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="bg-transparent">
-        <div className="flex flex-1 flex-col gap-4 p-6 mx-auto w-full max-w-4xl">
+        <div className="flex flex-col gap-4 p-6 mx-auto w-full max-w-4xl">
           <Header project={project} />
           <h1 className="text-3xl font-bold text-blue-dark">
             Diagrama de Pareto

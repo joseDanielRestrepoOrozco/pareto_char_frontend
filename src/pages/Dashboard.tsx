@@ -36,7 +36,7 @@ const Dashboard = () => {
       await setAllProjects();
     };
     loadProjects();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Dashboard = () => {
     };
 
     loadCurrentProject();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (isLoading) {

@@ -105,12 +105,14 @@ La aplicación estará disponible en `http://localhost:5173`
 
 1. **Accede al proyecto** creado
 2. En la sección **"Ingreso de Datos"**, puedes:
-   - **Ingresar manualmente**: Agregar problemas uno por uno
+   - **Ingresar manualmente**: Agregar problemas uno por uno (máximo 10 por proyecto)
    - **Importar desde archivo**: Subir un CSV o Excel
 3. **Formato de datos requerido**:
    - **Problema/Causa**: Descripción del problema
    - **Frecuencia**: Número de veces que ocurrió
    - **Costo** (opcional): Impacto económico
+4. **Limitaciones**:
+   - Máximo 10 problemas por proyecto para mantener la claridad del análisis
 
 #### Ejemplo de Datos:
 

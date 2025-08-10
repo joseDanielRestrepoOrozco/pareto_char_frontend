@@ -137,20 +137,20 @@ const LoginPage = () => {
               </Button>
             </form>
           </Form>
-          <div className="mt-6 text-center">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-blue-base hover:text-blue-dark transition-colors duration-200"
-            >
-              ¿Olvidaste tu contraseña?
-            </Link>
-          </div>
           <div className="mt-4">
             <Link
               to="/register"
               className="w-full bg-white text-blue-base font-bold py-3 px-4 rounded-lg border-2 border-blue-base hover:bg-blue-base hover:text-white transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-base focus:ring-offset-2 block text-center no-underline"
             >
               ¿Nuevo usuario? Regístrate aquí
+            </Link>
+          </div>
+          <div className="mt-4 text-right">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-blue-base hover:text-blue-dark transition-colors duration-200"
+            >
+              ¿Olvidaste tu contraseña?
             </Link>
           </div>
         </CardContent>

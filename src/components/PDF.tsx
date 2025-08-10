@@ -1,88 +1,43 @@
-import { Page, Text, View, Document, Image } from '@react-pdf/renderer';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  type DocumentProps
+} from '@react-pdf/renderer';
 import type { Project } from '@/types/Project';
-import type { Problem } from '@/types/Problem';
+import type { ParetoAnalysis } from '@/hooks/useParetoData';
 import { pdfStyles as styles } from '@/components/pdf-styles';
+import type React from 'react';
 
 interface MyDocumentProps {
   project: Project;
+  analysis: ParetoAnalysis;
 }
 
-// Calculate Pareto analysis
-const calculateParetoAnalysis = (
-  problems: Problem[],
-  threshold: number = 80
-) => {
-  if (!problems || problems.length === 0) {
-    return {
-      data: [],
-      totalFrequency: 0,
-      totalCategories: 0,
-      topCause: 'N/A',
-      principalCauses: [],
-      threshold,
-    };
-  }
-
-  const totalFrequency = problems.reduce((sum, p) => sum + p.frequency, 0);
-  let cumulativeSum = 0;
-  let cumulativeFrequency = 0;
-
-  const processedData = problems
-    .slice()
-    .sort((a, b) => b.frequency - a.frequency)
-    .map(problem => {
-      const percentage =
-        totalFrequency > 0 ? (problem.frequency / totalFrequency) * 100 : 0;
-      cumulativeSum += percentage;
-      cumulativeFrequency += problem.frequency;
-
-      return {
-        category: problem.name,
-        frequency: problem.frequency,
-        percentage,
-        cumulative: cumulativeFrequency,
-        cumulativePercentage: cumulativeSum,
-        isCritical: false,
-      };
-    });
-
-  // Mark critical items
-  const thresholdIndex = processedData.findIndex(
-    item => item.cumulativePercentage > threshold
-  );
-  const criticalEndIndex =
-    thresholdIndex === -1 ? processedData.length - 1 : thresholdIndex;
-
-  processedData.forEach((item, index) => {
-    item.isCritical = index <= criticalEndIndex;
-  });
-
-  const principalCauses = processedData.filter(item => item.isCritical);
-  const topCause = processedData[0]?.category || 'N/A';
-
-  return {
-    data: processedData,
-    totalFrequency,
-    totalCategories: problems.length,
-    topCause,
-    principalCauses,
-    threshold,
-  };
-};
-
-const logoUniversity = '/images/logo.jpg';
-
 // Create Document Component
-const MyDocument = ({ project }: MyDocumentProps) => {
-  const analysis = calculateParetoAnalysis(project.problems || []);
+const MyDocument = ({
+  project,
+  analysis
+}: MyDocumentProps): React.ReactElement<DocumentProps> => {
   const currentDate = new Date().toLocaleDateString('es-ES');
+
+  // Safety check for analysis data
+  if (!analysis || !analysis.data) {
+    return (
+      <Document>
+        <Page size="A4" style={styles.page}>
+          <Text>Error: No hay datos de análisis disponibles</Text>
+        </Page>
+      </Document>
+    );
+  }
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header with Logo */}
         <View style={styles.headerContainer}>
-          <Image style={styles.logo} src={logoUniversity} />
           <Text style={styles.header}>Análisis de Pareto - {project.name}</Text>
         </View>
 
@@ -140,8 +95,8 @@ const MyDocument = ({ project }: MyDocumentProps) => {
               </View>
 
               {/* Table Rows */}
-              {analysis.data.map((item, index) => (
-                <View key={index} style={styles.tableRow}>
+              {analysis.data.map(item => (
+                <View key={item.category} style={styles.tableRow}>
                   <View style={styles.tableCol}>
                     <Text style={styles.tableCell}>{item.category}</Text>
                   </View>
