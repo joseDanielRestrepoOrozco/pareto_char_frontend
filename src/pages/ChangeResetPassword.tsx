@@ -64,7 +64,6 @@ const ChangeResetPassword = () => {
     if (!token) {
       setTokenValid(false);
       toast.error('Token de recuperación no válido');
-    } else {
     }
   }, [token]);
 

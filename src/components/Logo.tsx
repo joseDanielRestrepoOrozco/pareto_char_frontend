@@ -1,5 +1,5 @@
 import React from 'react';
-import logoUcaldas from '@/assets/images/logo.jpg';
+import logo from '@/assets/images/logo-gold.png';
 
 const Logo: React.FC<{ showText?: boolean; size?: number }> = ({
   showText = true,
@@ -8,11 +8,10 @@ const Logo: React.FC<{ showText?: boolean; size?: number }> = ({
   return (
     <div className="flex items-center space-x-2">
       <img
-        src={logoUcaldas}
+        src={logo}
         alt="Logo"
         width={size}
         height={size}
-        className="rounded-md object-cover shadow-sm"
       />
       {showText && (
         <h1 className="text-2xl font-bold text-white">Diagrama de Pareto</h1>

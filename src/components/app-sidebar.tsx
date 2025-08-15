@@ -19,7 +19,7 @@ import {
   SidebarRail
 } from '@/components/ui/sidebar';
 
-import logoUcaldas from '@/assets/images/logo.jpg';
+import logo from '@/assets/images/logo-blue.png';
 
 export function AppSidebar() {
   const projects = useAppSelector(state => state.projects);
@@ -46,7 +46,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-6">
         <div className="flex items-center gap-3">
           <img
-            src={logoUcaldas}
+            src={logo}
             alt="Logo"
             className="w-10 h-10 rounded-lg object-cover"
           />

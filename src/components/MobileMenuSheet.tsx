@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useAppSelector } from '@/hooks/store';
 import MobileAuthContent from '@/components/MobileContent';
-import logoUcaldas from '@/assets/images/logo.jpg';
+import logo from '@/assets/images/logo-blue.png';
 
 const MobileMenuSheet = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +33,7 @@ const MobileMenuSheet = () => {
         <SheetHeader>
           <SheetTitle className="flex items-center space-x-2">
             <img
-              src={logoUcaldas}
+              src={logo}
               alt="Logo"
               className="h-6 w-6 rounded object-cover"
             />
