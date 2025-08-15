@@ -1,12 +1,12 @@
 import React from 'react';
 import DashboardCard from '@/components/ui/dashboard-card';
-import { useParetoChartData } from '@/hooks/useParetoData';
 import ParetoChart from '@/components/ParetoChart';
+import { useAppSelector } from '@/hooks/store';
 
 const ParetoChartSection: React.FC = () => {
-  const chartData = useParetoChartData();
+  const data = useAppSelector(state => state.analysis.data);
 
-  if (!chartData || chartData.length === 0) {
+  if (data.length === 0) {
     return null;
   }
 
@@ -16,7 +16,7 @@ const ParetoChartSection: React.FC = () => {
       description="Visualización de frecuencias ordenadas y porcentaje acumulativo"
       variant="bordered"
     >
-      <ParetoChart data={chartData} />
+      <ParetoChart data={data} />
     </DashboardCard>
   );
 };

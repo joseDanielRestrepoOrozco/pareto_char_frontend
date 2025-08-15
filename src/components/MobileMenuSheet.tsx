@@ -1,4 +1,4 @@
-import { BarChart3, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import {
   Sheet,
@@ -6,12 +6,13 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
+  SheetTrigger
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useAppSelector } from '@/hooks/store';
 import MobileAuthContent from '@/components/MobileContent';
+import logoUcaldas from '@/assets/images/logo.jpg';
 
 const MobileMenuSheet = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +32,11 @@ const MobileMenuSheet = () => {
       >
         <SheetHeader>
           <SheetTitle className="flex items-center space-x-2">
-            <BarChart3 className="h-6 w-6 text-blue-base" />
+            <img
+              src={logoUcaldas}
+              alt="Logo"
+              className="h-6 w-6 rounded object-cover"
+            />
             <span className="text-blue-base font-bold">Diagrama de Pareto</span>
           </SheetTitle>
           <SheetDescription className="text-blue-dark">

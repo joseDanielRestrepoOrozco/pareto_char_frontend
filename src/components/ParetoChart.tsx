@@ -1,5 +1,6 @@
 'use client';
 
+import type { Datum } from '@/types/Analysis';
 import {
   Bar,
   XAxis,
@@ -10,19 +11,11 @@ import {
   ResponsiveContainer,
   Line,
   ComposedChart,
-  Cell,
+  Cell
 } from 'recharts';
 
-interface ParetoData {
-  category: string;
-  frequency: number;
-  percentage: number;
-  cumulative: number;
-  isGolden?: boolean;
-}
-
 interface ParetoChartProps {
-  data: ParetoData[];
+  data: Datum[];
   barColors?: {
     critical?: string;
     normal?: string;
@@ -38,7 +31,7 @@ interface TooltipProps {
   active?: boolean;
   payload?: Array<{
     value: number;
-    payload: ParetoData & { isGolden?: boolean };
+    payload: Datum & { isCritical?: boolean };
   }>;
   label?: string;
 }
@@ -46,16 +39,16 @@ interface TooltipProps {
 const DEFAULT_COLORS = {
   bar: {
     critical: '#d5bb87',
-    normal: '#003e70',
+    normal: '#003e70'
   },
   line: {
     cumulative: '#045389',
-    reference: '#b5a27c',
+    reference: '#b5a27c'
   },
   text: {
     dark: '#00284d',
-    light: '#045389',
-  },
+    light: '#045389'
+  }
 };
 
 const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
@@ -68,10 +61,9 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
       <p className="text-blue-base">{`Frecuencia: ${
         payload[0]?.value?.toLocaleString() || 0
       }`}</p>
-      <p className="text-blue-light">{`Acumulado: ${(
-        payload[1]?.value || 0
-      ).toFixed(1)}%`}</p>
-      {data?.isGolden && (
+      <p className="text-blue-light">{`Acumulado: ${// Usa el valor del dato para no depender del orden del payload
+      (data?.cumulativePercentage ?? payload[1]?.value ?? 0).toFixed(1)}%`}</p>
+      {data?.isCritical && (
         <p className="text-xs mt-1 font-medium text-gold-dark">
           ⭐ Parte crítica (80/20)
         </p>
@@ -84,9 +76,8 @@ const ParetoChart = ({
   data,
   barColors = DEFAULT_COLORS.bar,
   lineColors = DEFAULT_COLORS.line,
-  threshold = 80,
+  threshold = 80
 }: ParetoChartProps) => {
-
   // Si no hay datos, mostrar mensaje
   if (!data || data.length === 0) {
     return (
@@ -122,7 +113,7 @@ const ParetoChart = ({
               value: 'Frecuencia',
               angle: -90,
               position: 'insideLeft',
-              style: { textAnchor: 'middle', fill: DEFAULT_COLORS.text.dark },
+              style: { textAnchor: 'middle', fill: DEFAULT_COLORS.text.dark }
             }}
           />
           <YAxis
@@ -135,7 +126,7 @@ const ParetoChart = ({
               value: 'Porcentaje Acumulado (%)',
               angle: 90,
               position: 'insideRight',
-              style: { textAnchor: 'middle', fill: lineColors.cumulative },
+              style: { textAnchor: 'middle', fill: lineColors.cumulative }
             }}
           />
           <Tooltip content={<CustomTooltip />} />
@@ -144,23 +135,23 @@ const ParetoChart = ({
               {
                 value: 'Frecuencia (Críticos)',
                 type: 'rect',
-                color: barColors.critical,
+                color: barColors.critical
               },
               {
                 value: 'Frecuencia (Otros)',
                 type: 'rect',
-                color: barColors.normal,
+                color: barColors.normal
               },
               {
                 value: '% Acumulado',
                 type: 'line',
-                color: lineColors.cumulative,
+                color: lineColors.cumulative
               },
               {
                 value: `% línea ${threshold}%`,
                 type: 'line',
-                color: lineColors.reference,
-              },
+                color: lineColors.reference
+              }
             ]}
           />
           <Bar
@@ -172,7 +163,7 @@ const ParetoChart = ({
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={entry.isGolden ? barColors.critical : barColors.normal}
+                fill={entry.isCritical ? barColors.critical : barColors.normal}
                 aria-label={`Categoría ${entry.category} con frecuencia ${entry.frequency}`}
               />
             ))}
@@ -180,7 +171,7 @@ const ParetoChart = ({
           <Line
             yAxisId="right"
             type="monotone"
-            dataKey="cumulative"
+            dataKey="cumulativePercentage"
             stroke={lineColors.cumulative}
             strokeWidth={3}
             name="% Acumulado"

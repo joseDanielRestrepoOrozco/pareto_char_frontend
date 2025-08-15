@@ -7,7 +7,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card';
 import {
   Form,
@@ -15,7 +15,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -32,16 +32,16 @@ const changePasswordSchema = z
       .min(8, 'La contraseña debe tener al menos 8 caracteres')
       .max(20, 'La contraseña debe tener como máximo 20 caracteres')
       .refine(val => /[0-9]/.test(val), {
-        error: 'La contraseña debe incluir un número',
+        error: 'La contraseña debe incluir un número'
       })
       .refine(val => /[^A-Za-z0-9]/.test(val), {
-        error: 'La contraseña debe incluir un carácter especial',
+        error: 'La contraseña debe incluir un carácter especial'
       }),
-    confirmNewPassword: z.string(),
+    confirmNewPassword: z.string()
   })
   .refine(data => data.newPassword === data.confirmNewPassword, {
     message: 'Las contraseñas no coinciden',
-    path: ['confirmNewPassword'],
+    path: ['confirmNewPassword']
   });
 
 const ChangeResetPassword = () => {
@@ -55,9 +55,9 @@ const ChangeResetPassword = () => {
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
       newPassword: '',
-      confirmNewPassword: '',
+      confirmNewPassword: ''
     },
-    mode: 'onTouched',
+    mode: 'onTouched'
   });
 
   useEffect(() => {
@@ -65,7 +65,6 @@ const ChangeResetPassword = () => {
       setTokenValid(false);
       toast.error('Token de recuperación no válido');
     } else {
-      console.log('Token recibido:', token); // Para debug
     }
   }, [token]);
 
@@ -76,11 +75,10 @@ const ChangeResetPassword = () => {
     }
 
     try {
-      console.log('Enviando solicitud con token:', token); // Para debug
       await resetPasswordRequest({
         token,
         newPassword: values.newPassword,
-        confirmNewPassword: values.confirmNewPassword,
+        confirmNewPassword: values.confirmNewPassword
       });
 
       toast.success('Contraseña restablecida exitosamente');

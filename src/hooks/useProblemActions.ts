@@ -3,14 +3,14 @@ import {
   clearProblems,
   removeProblem,
   setProblems,
-  updateProblem,
+  updateProblem
 } from '@/store/problems/slice';
 import { useAppDispatch, useAppSelector } from '@/hooks/store';
 import type { Problem, NewProblem } from '@/types/Problem';
 import {
   createProblemRequest,
   deleteProblemRequest,
-  updateProblemRequest,
+  updateProblemRequest
 } from '@/services/problem';
 import { toast } from 'sonner';
 
@@ -36,34 +36,27 @@ export const useProblemActions = () => {
     }
   };
 
-  const deleteProblem = (projectId: string, problemId: string) => {
-    toast.promise(deleteProblemRequest(projectId, problemId), {
+  const deleteProblem = (problemId: string) => {
+    toast.promise(deleteProblemRequest(problemId), {
       loading: 'Eliminando problema...',
       success: () => {
-        console.log('Problem deleted successfully');
         dispatch(removeProblem(problemId));
         return 'Problema eliminado correctamente';
       },
       error: () => {
         return 'Error al eliminar el problema';
-      },
+      }
     });
   };
 
   const modifyProblem = async (
-    projectId: string,
     problemId: string,
     changes: Partial<Problem>
   ) => {
     try {
-      const updatedProblem = await updateProblemRequest(
-        projectId,
-        problemId,
-        changes
-      );
+      const updatedProblem = await updateProblemRequest(problemId, changes);
       dispatch(updateProblem({ id: problemId, changes: updatedProblem }));
       toast.success('Problema actualizado correctamente');
-      return updatedProblem;
     } catch (error) {
       toast.error('Error al actualizar el problema');
       console.error('Error updating problem:', error);
@@ -83,6 +76,6 @@ export const useProblemActions = () => {
     deleteProblem,
     modifyProblem,
     setAllProblems,
-    clearAllProblems,
+    clearAllProblems
   };
 };

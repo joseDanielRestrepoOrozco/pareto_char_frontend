@@ -3,7 +3,7 @@ import type { Project } from '@/types/Project';
 import { useAuth } from '@/hooks/useAuth';
 import { useProjectActions } from '@/hooks/useProjectActions';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { BarChart3, Plus, LogOut } from 'lucide-react';
+import { Plus, LogOut } from 'lucide-react';
 import ProjectSidebarItem from '@/components/ProjectSidebarItem';
 import {
   Sidebar,
@@ -16,8 +16,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
+  SidebarRail
 } from '@/components/ui/sidebar';
+
+import logoUcaldas from '@/assets/images/logo.jpg';
 
 export function AppSidebar() {
   const projects = useAppSelector(state => state.projects);
@@ -43,9 +45,11 @@ export function AppSidebar() {
     <Sidebar className="border-r-2 border-gold-base">
       <SidebarHeader className="p-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-base">
-            <BarChart3 className="w-6 h-6 text-white" />
-          </div>
+          <img
+            src={logoUcaldas}
+            alt="Logo"
+            className="w-10 h-10 rounded-lg object-cover"
+          />
           <div>
             <h2 className="text-lg font-bold text-blue-dark">
               Diagrama de Pareto

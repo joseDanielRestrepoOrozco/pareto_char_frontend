@@ -11,17 +11,10 @@ import {
 import { useAppSelector } from '@/hooks/store';
 import { Trash2 } from 'lucide-react';
 import { useProblemActions } from '@/hooks/useProblemActions';
-import { useParams } from 'react-router-dom';
 
 const DataTable = () => {
   const problems = useAppSelector(state => state.problems);
   const { deleteProblem } = useProblemActions();
-  const { id } = useParams<{ id: string }>();
-
-  if (!id) {
-    console.error('DataTable: missing project ID');
-    return null;
-  }
 
   return (
     <DashboardCard
@@ -53,7 +46,7 @@ const DataTable = () => {
                       variant="ghost"
                       size="sm"
                       className="cursor-pointer"
-                      onClick={() => deleteProblem(id, p.id)}
+                      onClick={() => deleteProblem(p.id)}
                       aria-label={`Eliminar ${p.name}`}
                     >
                       <Trash2 className="h-4 w-4" />
