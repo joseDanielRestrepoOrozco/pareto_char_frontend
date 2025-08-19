@@ -6,9 +6,9 @@ import App from '@/App';
 import Providers from '@/components/Providers';
 
 createRoot(document.getElementById('root')!).render(
-  <Providers>
-    <StrictMode>
+  <StrictMode>
+    <Providers>
       <App />
-    </StrictMode>
-  </Providers>
+    </Providers>
+  </StrictMode>
 );

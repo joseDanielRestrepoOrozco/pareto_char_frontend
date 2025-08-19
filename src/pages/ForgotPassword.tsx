@@ -18,16 +18,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { forgotPasswordSchema } from '@/types/Auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { forgotPasswordRequest } from '@/services/auth';
 import { toast } from 'sonner';
 import { ArrowLeft, Mail, KeyRound } from 'lucide-react';
 import { AxiosError } from 'axios';
-
-const forgotPasswordSchema = z.object({
-  email: z.email('Correo electrónico no válido'),
-});
 
 const ForgotPassword = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);

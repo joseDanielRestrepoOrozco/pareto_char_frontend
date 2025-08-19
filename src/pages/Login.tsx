@@ -3,7 +3,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card';
 import {
   Form,
@@ -11,10 +11,9 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -22,32 +21,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { Lock, LockIcon, Mail } from 'lucide-react';
 import { useEffect } from 'react';
-
-const emailSchema = z.email({
-  error: 'Formato de correo electrónico no válido',
-});
-
-const passwordSchema = z
-  .string()
-  .trim()
-  .min(8, { error: 'La contraseña debe tener al menos 8 caracteres' })
-  .max(20, { error: 'La contraseña debe tener como máximo 20 caracteres' })
-  .refine(val => /[0-9]/.test(val), {
-    error: 'La contraseña debe incluir un número',
-  })
-  .refine(val => /[^A-Za-z0-9]/.test(val), {
-    error: 'La contraseña debe incluir un carácter especial',
-  });
-
-const loginSchema = z.object(
-  {
-    email: emailSchema,
-    password: passwordSchema,
-  },
-  {
-    error: 'Datos inválidos para el login',
-  }
-);
+import { loginSchema } from '@/types/Auth';
 
 const LoginPage = () => {
   const { login, isAuthenticated } = useAuth();
@@ -62,9 +36,9 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
-      password: '',
+      password: ''
     },
-    mode: 'onTouched',
+    mode: 'onTouched'
   });
 
   const onSubmit = form.handleSubmit(async values => {

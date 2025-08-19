@@ -18,31 +18,12 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { changeResetPasswordSchema } from '@/types/Auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordRequest } from '@/services/auth';
 import { toast } from 'sonner';
 import { ArrowLeft, Eye, EyeOff, KeyRound, AlertTriangle } from 'lucide-react';
 import { AxiosError } from 'axios';
-
-const changePasswordSchema = z
-  .object({
-    newPassword: z
-      .string()
-      .min(8, 'La contraseña debe tener al menos 8 caracteres')
-      .max(20, 'La contraseña debe tener como máximo 20 caracteres')
-      .refine(val => /[0-9]/.test(val), {
-        error: 'La contraseña debe incluir un número'
-      })
-      .refine(val => /[^A-Za-z0-9]/.test(val), {
-        error: 'La contraseña debe incluir un carácter especial'
-      }),
-    confirmNewPassword: z.string()
-  })
-  .refine(data => data.newPassword === data.confirmNewPassword, {
-    message: 'Las contraseñas no coinciden',
-    path: ['confirmNewPassword']
-  });
 
 const ChangeResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -52,7 +33,7 @@ const ChangeResetPassword = () => {
   const { token } = useParams<{ token: string }>();
 
   const form = useForm({
-    resolver: zodResolver(changePasswordSchema),
+    resolver: zodResolver(changeResetPasswordSchema),
     defaultValues: {
       newPassword: '',
       confirmNewPassword: ''

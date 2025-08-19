@@ -1,6 +1,8 @@
-# Pareto Chart Application 📊
+# Diagrama de Pareto — Frontend 📊
 
-Una aplicación web moderna para realizar análisis de Pareto que te ayuda a identificar los problemas más críticos aplicando el principio 80/20.
+Aplicación web React (Vite + TypeScript) para realizar análisis de Pareto y priorizar causas según el principio 80/20.
+
+Proyecto académico de la Universidad de Caldas.
 
 ## 🌟 ¿Qué es el Principio de Pareto?
 
@@ -12,54 +14,54 @@ El Principio de Pareto, también conocido como la regla 80/20, establece que apr
 
 ## 🚀 Características Principales
 
-- **Análisis Visual**: Gráficos interactivos que muestran la distribución de problemas
-- **Identificación Automática**: La aplicación identifica automáticamente el 20% crítico
-- **Gestión de Proyectos**: Organiza múltiples análisis en proyectos separados
-- **Dashboard Intuitivo**: Interfaz moderna y fácil de usar
-- **Autenticación Segura**: Sistema de login con verificación en dos pasos
-- **Responsive**: Funciona perfectamente en dispositivos móviles y desktop
+- Gráfico de Pareto interactivo con porcentajes acumulados
+- Identificación automática de causas críticas por umbral (80/20 configurable)
+- Gestión de proyectos (crear, listar, eliminar, actualizar)
+- Descarga de reporte en PDF del análisis
+- Autenticación con verificación en dos pasos (2FA)
+- Interfaz responsive (móvil y escritorio)
 
-## 📋 Requisitos Previos
+## 📋 Requisitos
 
-- Node.js (versión 18 o superior)
-- pnpm (recomendado) o npm
-- Un navegador web moderno
-- Conexión a internet para el registro inicial
+- Node.js 18+
+- pnpm (recomendado)
+- Backend accesible y su URL en variables de entorno
 
 ## 🔧 Instalación y Configuración
 
-### 1. Clonar el Repositorio
+### 1) Clonar el repositorio
 
 ```bash
-git clone <url-del-repositorio>
-cd pareto/frontend
+git clone https://github.com/joseDanielRestrepoOrozco/pareto_char_frontend.git
+cd pareto_char_frontend
 ```
 
-### 2. Instalar Dependencias
+### 2) Instalar dependencias
 
 ```bash
 pnpm install
 ```
 
-### 3. Configurar Variables de Entorno
+### 3) Configurar variables de entorno
 
 ```bash
 cp .env.example .env
 ```
 
-Edita el archivo `.env` con la URL de tu backend:
+Edita el archivo `.env` con la URL del backend:
 
-```env
+```
+# ejemplo
 VITE_BACKEND_URL=http://localhost:3000/api
 ```
 
-### 4. Ejecutar la Aplicación
+### 4) Ejecutar en desarrollo
 
 ```bash
 pnpm run dev
 ```
 
-La aplicación estará disponible en `http://localhost:5173`
+La aplicación estará disponible en http://localhost:5173
 
 ## 📖 Guía de Uso
 
@@ -78,26 +80,28 @@ La aplicación estará disponible en `http://localhost:5173`
 
 #### Dashboard
 
-- **Vista general** de todos tus proyectos
-- **Estadísticas rápidas** de análisis realizados
-- **Acceso directo** a crear nuevos proyectos
-- **Historial** de análisis recientes
+- **Formulario para crear nuevos proyectos**
+
+ó
+
+- **Formulario para ingresar nuevos problemas al proyecto**
+- **Lista de los problemas junto a sus frecuencias**
+- **Diagrama de pareto ordenado de mayor a menor frecuencia**
+- **Lista con el reporte de los problemas incluyendo frecuencias y porcentajes**
 
 #### Sidebar de Navegación
 
 - **Proyectos**: Lista de todos tus proyectos
 - **Nuevo Proyecto**: Crear un análisis desde cero
-- **Configuración**: Ajustes de cuenta
 - **Cerrar Sesión**: Salir de la aplicación
 
-### 📊 Creando tu Primer Análisis de Pareto
+### 📊 Crear tu primer análisis de Pareto
 
 #### Paso 1: Crear un Proyecto
 
 1. En el dashboard, haz clic en **"Nuevo Proyecto"**
 2. Completa la información:
    - **Nombre**: Ej. "Análisis de Defectos de Calidad Q1 2024"
-   - **Descripción**: Ej. "Identificación de principales causas de defectos en producción"
    - **Categoría**: Selecciona la más apropiada
 3. Haz clic en **"Crear Proyecto"**
 
@@ -106,7 +110,7 @@ La aplicación estará disponible en `http://localhost:5173`
 1. **Accede al proyecto** creado
 2. En la sección **"Ingreso de Datos"**, puedes:
    - **Ingresar manualmente**: Agregar problemas uno por uno (máximo 10 por proyecto)
-   - **Importar desde archivo**: Subir un CSV o Excel
+   - Importación desde archivo: aún no disponible en el frontend
 3. **Formato de datos requerido**:
    - **Problema/Causa**: Descripción del problema
    - **Frecuencia**: Número de veces que ocurrió
@@ -116,13 +120,13 @@ La aplicación estará disponible en `http://localhost:5173`
 
 #### Ejemplo de Datos:
 
-| Problema                | Frecuencia | Costo  |
-| ----------------------- | ---------- | ------ |
-| Defecto en soldadura    | 45         | $1,200 |
-| Material defectuoso     | 32         | $800   |
-| Error humano            | 28         | $600   |
-| Falla de máquina        | 15         | $1,500 |
-| Problema de calibración | 8          | $300   |
+| Problema                | Frecuencia |
+| ----------------------- | ---------- |
+| Defecto en soldadura    | 45         |
+| Material defectuoso     | 32         |
+| Error humano            | 28         |
+| Falla de máquina        | 15         |
+| Problema de calibración | 8          |
 
 #### Paso 3: Generar el Análisis
 
@@ -187,11 +191,9 @@ La aplicación te mostrará:
 - Identifica tendencias y mejoras
 - Evalúa la efectividad de las acciones correctivas
 
-#### Exportación de Datos
+#### Exportación de datos
 
-- **PDF**: Reportes completos para presentaciones
-- **Excel**: Datos para análisis adicional
-- **Imágenes**: Gráficos para documentación
+- PDF: Reporte completo del análisis (usa `@react-pdf/renderer`)
 
 #### Colaboración
 
@@ -199,16 +201,28 @@ La aplicación te mostrará:
 - Agrega comentarios y notas
 - Mantén un historial de cambios
 
-### 🔧 Configuración y Personalización
+## 🧩 Tecnologías principales
 
-#### Ajustes de Cuenta
+- React 19 + TypeScript + Vite
+- Redux Toolkit para estado global (revisar `src/store`)
+- shadcn/ui + Tailwind CSS para UI
+- Axios para llamadas HTTP (`src/services`)
+- @react-pdf/renderer para reportes PDF
 
-- Cambiar información personal
-- Actualizar contraseña
-- Configurar notificaciones
+## 📁 Estructura del proyecto (src)
 
-#### Personalización de Gráficos
+- `components/`: Componentes reutilizables (UI, layout, PDF, navegación)
+- `sections/`: Secciones de página (formularios, tablas, hero, etc.)
+- `pages/`: Páginas enrutadas (login, register, dashboard, etc.)
+- `services/`: Cliente HTTP y servicios (auth, proyectos, análisis)
+- `store/`: Estado global y slices
+- `hooks/`: Hooks personalizados
+- `assets/`: Imágenes y fuentes
+- `types/`: Tipos compartidos
+- `lib/`: Utilidades
 
-- Elegir colores corporativos
-- Ajustar etiquetas y títulos
-- Configurar formatos de números
+## 🤝 Créditos
+
+Este proyecto hace parte de un trabajo académico de la Universidad de Caldas.
+
+Autoría y mantenimiento: ver el repositorio y colaboradores.

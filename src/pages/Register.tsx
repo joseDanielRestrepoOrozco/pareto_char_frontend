@@ -3,7 +3,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card';
 import {
   Form,
@@ -11,10 +11,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { registerSchema } from '@/types/Auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -22,12 +22,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { Lock, Mail, User, UserPlus } from 'lucide-react';
 import { useEffect } from 'react';
-
-const RegisterSchema = z.object({
-  username: z.string().min(1, 'Nombre de usuario es requerido'),
-  email: z.email('Correo electrónico no válido'),
-  password: z.string().min(8, 'La contraseña debe tener al menos 6 caracteres'),
-});
 
 const RegisterPage = () => {
   const { signup, isAuthenticated } = useAuth();
@@ -39,13 +33,13 @@ const RegisterPage = () => {
   }, [isAuthenticated]);
 
   const form = useForm({
-    resolver: zodResolver(RegisterSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       username: '',
       email: '',
-      password: '',
+      password: ''
     },
-    mode: 'onTouched',
+    mode: 'onTouched'
   });
 
   const onSubmit = form.handleSubmit(async values => {
