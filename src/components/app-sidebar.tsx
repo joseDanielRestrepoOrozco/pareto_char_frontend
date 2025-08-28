@@ -1,6 +1,16 @@
+import React from 'react';
 import { useAppSelector } from '@/hooks/store';
 import type { Project } from '@/types/Project';
 import { useAuth } from '@/hooks/useAuth';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { useProjectActions } from '@/hooks/useProjectActions';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Plus, LogOut } from 'lucide-react';
@@ -28,7 +38,12 @@ export function AppSidebar() {
   const { deleteProject } = useProjectActions();
   const navigate = useNavigate();
 
+  const [open, setOpen] = React.useState(false);
   const handleLogout = () => {
+    setOpen(true);
+  };
+  const confirmLogout = () => {
+    setOpen(false);
     logout();
     navigate('/');
   };
@@ -112,15 +127,35 @@ export function AppSidebar() {
       <SidebarFooter className="p-4">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={handleLogout}
-              className="h-12 px-4 hover:bg-red-50 transition-colors w-full text-red-600"
-            >
-              <div className="flex items-center gap-3">
-                <LogOut className="w-5 h-5" />
-                <span className="font-medium">Cerrar Sesión</span>
-              </div>
-            </SidebarMenuButton>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <SidebarMenuButton
+                onClick={handleLogout}
+                className="h-12 px-4 hover:bg-red-50 transition-colors w-full text-red-600"
+              >
+                <div className="flex items-center gap-3">
+                  <LogOut className="w-5 h-5" />
+                  <span className="font-medium">Cerrar Sesión</span>
+                </div>
+              </SidebarMenuButton>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>¿Cerrar sesión?</DialogTitle>
+                </DialogHeader>
+                <p>¿Estás seguro de que deseas cerrar la sesión?</p>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancelar</Button>
+                  </DialogClose>
+                  <Button
+                    variant="destructive"
+                    onClick={confirmLogout}
+                    autoFocus
+                  >
+                    Cerrar sesión
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

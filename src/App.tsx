@@ -40,7 +40,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
-      <Toaster position="top-right" richColors />
+      <Toaster position="bottom-right" richColors />
     </>
   );
 };
